@@ -1,10 +1,18 @@
 import { View, Text, StatusBar, StyleSheet, ToastAndroid } from 'react-native'
 import React, { useState, useEffect, } from 'react'
 import { BarCodeScanner } from 'expo-barcode-scanner';
+import { useIsFocused } from '@react-navigation/native';
 const QRScan = ({ navigation }) => {
   const [isTorchOn, setIsTorchOn] = useState(false);
+  const [Scanned, setScanned] = useState(false)
   const [per, setPer] = useState(false)
   const [qrd, setqrd] = useState('');
+
+
+  const isFocused = useIsFocused();
+    useEffect(() => {
+        setScanned(false)
+    }, [isFocused]);
   function onSuccess(e) {
     ToastAndroid.showWithGravity(
       'Scan Successfull',
@@ -14,6 +22,7 @@ const QRScan = ({ navigation }) => {
     navigation.navigate("QR Data", {
       qrd: e.data
     })
+    
   };
   const [fl, setfl] = useState(false);
   const changefl = () => {
@@ -38,20 +47,19 @@ const QRScan = ({ navigation }) => {
       <View style={{ flex: 1,justifyContent:'center',alignContent:'center',alignItems:'center' }}>
         <View style={{elevation:15, borderRadius: 10,width:'93%', borderColor: 'black', height: '66.6%' ,justifyContent:'center',alignContent:'center',alignItems:'center'}}>
         
-          <BarCodeScanner 
-            onBarCodeScanned={(e) => onSuccess(e)}
+          {isFocused?<BarCodeScanner 
+            onBarCodeScanned={Scanned ? undefined :(e)=> {
+              setScanned(true)
+              onSuccess(e)}}
             style={{
               height: '100%',
               width: '100%',
-              // marginLeft: '50%',
               borderRadius:10,
               elevation: 10,
               borderWidth:20,
               borderBottomColor: 'black',
-
             }}
-
-          />
+          />:null}
 
         </View>
         <View style={{

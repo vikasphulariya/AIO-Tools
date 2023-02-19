@@ -28,11 +28,11 @@ export default function QRdata({route,navigation}) {
     
   return (
     <View style={{marginTop: StatusBar.currentHeight}}>
-      <TextInput editable={false} 
+      <TextInput editable={true} 
         multiline
         numberOfLines={4}
         maxLength={40} value={route.params.qrd}
-        style={{color:"black"}}></TextInput>
+        style={{color:"black",padding:10,borderWidth:1,borderRadius:10,margin:10,justifyContent:'center',alignContent:'center',textAlign:'center'}}></TextInput>
         <View style={{flexDirection:'row',alignContent:'center',justifyContent:'space-around'}} >
 
         <Button onPress={da} title={"Copy"}></Button>

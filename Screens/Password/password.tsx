@@ -10,6 +10,8 @@ export default function Password({ navigation }) {
     const [passwordList, setpasswordList] = useState([])
     const [passw, setPassw] = useState('')
     const [confirmPswd, setConfirmPswd] = useState('')
+    const [pswdEligble, setPswdEligble] = useState(false)
+    const [pswdVisible, setPswdVisible] = useState(true)
     const [lock, setLock] = useState([{
         paswordset:null,
         lockpswd:null
@@ -77,6 +79,7 @@ try {
             {
               text: 'Yes',
               onPress: async() => {
+                setPassw('')
                 let tempq=[]
                 const Passworddatatodevice = JSON.stringify(tempq)
             await AsyncStorage.setItem('Password', Passworddatatodevice);
@@ -146,9 +149,9 @@ try {
                 <Text style={styles.title}>Your Saved Pacssword's</Text>
                 <TouchableOpacity onPress={()=>{
                     // console.log(lock[0].lockpswd)
-            console.log("rrf")
+            // console.log("rrf")
             setModalVisible(true)
-            console.log(lock[0].lockpswd)
+            // console.log(lock[0].lockpswd)
         }
             }>
 
@@ -207,8 +210,17 @@ try {
         <View>
         
         <Text style={styles.title}>{lock[0].paswordset?'Enter':'Set'} Master Password</Text>
-        <TextInput placeholder={lock[0].paswordset?'Enter Password':'Set Password'} secureTextEntry={true} style={styles.password} 
-        value={passw} onChangeText={(value)=>{setPassw(value)}} />
+        <View style={[styles.password,{flexDirection:'row'}]}>
+
+        <TextInput placeholder={lock[0].paswordset?'Enter Password':'Set Password'}
+         secureTextEntry={pswdVisible}  style={{width: '70%'}}
+        value={passw}  onChangeText={(value)=>{setPassw(value)}} />
+        <TouchableOpacity onPress={()=>{setPswdVisible(!pswdVisible)}}>
+
+<Image style={styles.icon} source={pswdVisible? require('./Components/hide.png'):require('./Components/eye.png')}/>
+</TouchableOpacity>
+        </View>
+
         {lock[0].paswordset?null:
         <TextInput placeholder='Confirm Password' style={styles.password}
         value={confirmPswd} onChangeText={(value)=>{setConfirmPswd(value)}} />
@@ -221,7 +233,9 @@ try {
                 
             }}>
 
-            <View style={[styles.addbtn,{marginTop:10}]}>
+            <View style={[styles.addbtn,passw.length<5?{backgroundColor:'#fff'}:{backgroundColor:'#49e4f2',}, {marginTop:10,}]} 
+            
+            >
             <Text style={styles.addtxt}>✓</Text>
             </View>
             </TouchableOpacity>
@@ -334,5 +348,6 @@ const styles = StyleSheet.create({
         padding:10,
         marginVertical:10,
         elevation:10,
+        justifyContent:'space-between',
     }
 });

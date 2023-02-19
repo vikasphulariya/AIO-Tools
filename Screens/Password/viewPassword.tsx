@@ -1,13 +1,14 @@
-import { View, Text, TextInput, StatusBar,TouchableOpacity,StyleSheet } from 'react-native'
+import { View, Text, TextInput, StatusBar,TouchableOpacity,StyleSheet,Image } from 'react-native'
 import React, { useEffect, useState, } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { styles } from '../clock/stopwatch'
 
 export default function ViewPassword({route,navigation}) {
 
     const [title, setTitle] = useState('')
     const [disc, setDisc] = useState('')
     const [noteList, setNoteList] = useState([])
-
+    const [pswdVisible, setPswdVisible] = useState(true)
     useEffect(() => {
         getNotesFromUserDevice();
         setDisc(route.params.qrd.item.d)
@@ -61,16 +62,23 @@ export default function ViewPassword({route,navigation}) {
     return (
         <View style={{  marginTop:StatusBar.currentHeight+100}}>
             <TextInput value={title}
-                placeholder='Note Title'
                 onChangeText={(value) => setTitle(value)}
                 style={Styles.titl} />
-            <TextInput placeholder='Note Description'
+<View style={[{flexDirection:'row'},Styles.Describe]}>
+
+            <TextInput secureTextEntry={pswdVisible}
             value={disc}
-                style={Styles.Describe}
-                editable={title.length!=0?true:false}
-                multiline={true}
-                onChangeText={(value) => setDisc(value)}
-                numberOfLines={3} />
+            style={{width:'88%'}}
+            editable={title.length!=0?true:false}
+            onChangeText={(value) => setDisc(value)}
+            />
+            
+            <TouchableOpacity onPress={()=>{setPswdVisible(!pswdVisible)}}>
+
+            <Image style={Styles.icon} source={pswdVisible? require('./Components/hide.png'):require('./Components/eye.png')}/>
+            </TouchableOpacity>
+            </View>
+
             <View style={Styles.btnrow}>
                 <TouchableOpacity onPress={() => {
                     // console.log('f')
@@ -123,5 +131,15 @@ const Styles = StyleSheet.create({
         borderColor: '#c0c0c0',
         borderRadius: 50,
         elevation: 10,
+    },
+    icon: {
+        width: 24,
+        height: 24,
+        margin: 1,
+        marginBottom: 8,
+        marginHorizontal: 10,
+        padding: 15,
+        elevation: 5,
+        paddingTop:10,
     },
 })

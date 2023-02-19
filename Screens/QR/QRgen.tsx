@@ -18,13 +18,22 @@ const QRgen = () => {
     }
     const fetchCopiedText = async () => {
         try {
+            if(!Clipboard.hasString){
+                ToastAndroid.showWithGravity(
+                    'Nothing to Paste',
+                    ToastAndroid.SHORT,
+                    ToastAndroid.CENTER,
+                );
+            }
+            else{
             const text = await Clipboard.getString();
             setqrval(text);
             ToastAndroid.showWithGravity(
                 'Pasted Successfully',
                 ToastAndroid.SHORT,
+                
                 ToastAndroid.CENTER,
-            );
+            );}
         }
         catch (err) {
             setqrval("https://www.google.com/")
