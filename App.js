@@ -17,7 +17,13 @@ import Loc from './Screens/Location/navigation';
 import Notes from './Screens/Notes/Notes';
 import NewNote from './Screens/Notes/newNote';
 import ViewNote from './Screens/Notes/viewNote';
-// import Clock from './Screens/clock';
+import ViewPassword from './Screens/Password/viewPassword';
+import Clock from './Screens/clock';
+import Password from './Screens/Password/password';
+import NewPassword from './Screens/Password/newPassword';
+// import StateWise from './Components/Screens/StateWise';
+// import India from './Components/Screens/India';
+
 const Stack = createNativeStackNavigator();
 
 function App() {
@@ -34,8 +40,14 @@ function App() {
         <Stack.Screen name="Whatsapp Message a Number" component={Wha} options={{headerShown:false}}/>
         <Stack.Screen name="Notes" component={Notes} options={{headerShown:false}}/>
         <Stack.Screen name="View Note" component={ViewNote} options={{headerShown:false}}/>
+        <Stack.Screen name="View Password" component={ViewPassword} options={{headerShown:false}}/>
         <Stack.Screen name="Add a Note" component={NewNote} options={{headerShown:true}}/>
-        {/* <Stack.Screen name="StopWatch" component={Clock} options={{headerShown:false}}/> */}
+        <Stack.Screen name="Add a Password" component={NewPassword} options={{headerShown:true}}/>
+        <Stack.Screen name="StopWatch" component={Clock} options={{headerShown:false}}/>
+        <Stack.Screen name="Password" component={Password} options={{headerShown:false}}/>
+        {/* <Stack.Screen name="India" component={India} options={{headerShown:false}} />
+        <Stack.Screen name="StateWise" component={StateWise} options={{headerShown:false}} /> */}
+
       </Stack.Navigator>
     </NavigationContainer>
   );

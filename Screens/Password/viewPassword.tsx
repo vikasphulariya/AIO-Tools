@@ -2,7 +2,7 @@ import { View, Text, TextInput, StatusBar,TouchableOpacity,StyleSheet } from 're
 import React, { useEffect, useState, } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-export default function ViewNote({route,navigation}) {
+export default function ViewPassword({route,navigation}) {
 
     const [title, setTitle] = useState('')
     const [disc, setDisc] = useState('')
@@ -59,7 +59,7 @@ export default function ViewNote({route,navigation}) {
     }
 
     return (
-        <View style={{  marginTop:StatusBar.currentHeight}}>
+        <View style={{  marginTop:StatusBar.currentHeight+100}}>
             <TextInput value={title}
                 placeholder='Note Title'
                 onChangeText={(value) => setTitle(value)}

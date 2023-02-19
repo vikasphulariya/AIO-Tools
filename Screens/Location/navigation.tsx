@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Platform, Text, View, StyleSheet, Image, ToastAndroid, Linking, KeyboardAvoidingView, TextInput, TouchableOpacity, FlatList, Keyboard } from 'react-native';
+import { Platform, Text, View, StyleSheet, Image,
+   ToastAndroid, Linking, KeyboardAvoidingView, TextInput,
+    TouchableOpacity, FlatList,StatusBar, Keyboard } from 'react-native';
 import * as Location from 'expo-location';
 import SavedLocations from './Components/SavedLocations';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+// import { StatusBar } from 'expo-status-bar';
 export default function Loc() {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState("Waiting for Permission");
@@ -92,7 +95,8 @@ const VisitMap =async(mapurl)=>{
 
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} >
+       <StatusBar style="auto" hidden={false} />
       <View>
         <Text style={styles.title}>Your Saved Location's</Text>
       </View>
@@ -158,6 +162,7 @@ const VisitMap =async(mapurl)=>{
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginTop: StatusBar.currentHeight
     // alignContent: 'center',
     // padding: 20,
   },

@@ -1,9 +1,6 @@
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
-// Screens
-// import QRgen from './QR/QRgen';
 import QRScan from './QR/QRScan';
 import useIsReady from './QR/useIsReady';
 import QRgen from './QR/QRgen';

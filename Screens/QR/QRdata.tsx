@@ -1,4 +1,4 @@
-import { View, Text ,TextInput,ToastAndroid,Button,Linking} from 'react-native'
+import { View, StatusBar ,TextInput,ToastAndroid,Button,Linking} from 'react-native'
 import React, { useCallback } from 'react'
 // import { black } from 'react-native-paper/lib/typescript/styles/themes/v2/colors'
 import Clipboard from '@react-native-community/clipboard'
@@ -27,7 +27,7 @@ export default function QRdata({route,navigation}) {
       }
     
   return (
-    <View>
+    <View style={{marginTop: StatusBar.currentHeight}}>
       <TextInput editable={false} 
         multiline
         numberOfLines={4}

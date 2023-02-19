@@ -1,5 +1,5 @@
-import { View, Text, TouchableOpacity, StyleSheet, ToastAndroid } from 'react-native'
-import React, { useState, useEffect } from 'react'
+import { View, Text, StatusBar, StyleSheet, ToastAndroid } from 'react-native'
+import React, { useState, useEffect, } from 'react'
 import { BarCodeScanner } from 'expo-barcode-scanner';
 const QRScan = ({ navigation }) => {
   const [isTorchOn, setIsTorchOn] = useState(false);
@@ -29,14 +29,14 @@ const QRScan = ({ navigation }) => {
      onFailure();
      if(!per){
     return(
-      <View style={{backgroundColor:'orange',justifyContent:'center',alignContent:'center',alignItems:'center',flex:1}}>
+      <View style={{marginTop: StatusBar.currentHeight,justifyContent:'center',alignContent:'center',alignItems:'center',flex:1}}>
         <Text>Permissons not granted</Text>
       </View>
     )}
   }
     return (
-      <View style={{ flex: 1, backgroundColor: 'orange',justifyContent:'center',alignContent:'center',alignItems:'center' }}>
-        <View style={{elevation:15,borderWidth:5, borderRadius: 10,width:'93%', borderColor: 'black', height: '66.6%' ,justifyContent:'center',alignContent:'center',alignItems:'center'}}>
+      <View style={{ flex: 1,justifyContent:'center',alignContent:'center',alignItems:'center' }}>
+        <View style={{elevation:15, borderRadius: 10,width:'93%', borderColor: 'black', height: '66.6%' ,justifyContent:'center',alignContent:'center',alignItems:'center'}}>
         
           <BarCodeScanner 
             onBarCodeScanned={(e) => onSuccess(e)}
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 21,
-    color: 'rgb(0,122,255)'
+    color: 'rgb(0,122,255)',
   },
   buttonTouchable: {
     padding: 16

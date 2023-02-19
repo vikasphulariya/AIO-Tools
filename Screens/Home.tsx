@@ -1,6 +1,6 @@
 
 
-import React, { useState, useCallback, useEffect, memo } from 'react';
+import React, { useState, useCallback, memo } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import type { PropsWithChildren } from 'react';
 import {
@@ -31,8 +31,8 @@ const Home = ({ navigation }) => {
   )
   return (
     <View>
-      {/* <StatusBar style="dark" /> */}
-      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', margin: 10 }}>
+      <StatusBar style="dark" />
+      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', margin: 10 ,flexWrap:'wrap'}}>
         <TouchableOpacity onPress={() => utApps("Calculator")}>
           <Image style={Homestyle.icons} source={require('./Icons/cal.png')} />
         </TouchableOpacity>
@@ -45,8 +45,8 @@ const Home = ({ navigation }) => {
         <TouchableOpacity onPress={() => utApps("Saved Loaction")}>
           <Image style={Homestyle.icons} source={require('./Icons/location.png')} />
         </TouchableOpacity>
-      </View>
-      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', margin: 10 }}>
+      {/* </View>
+      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', margin: 10 }}> */}
 
         <TouchableOpacity onPress={() => utApps("Notes")}>
           <Image style={Homestyle.icons} source={require('./Icons/notes.png')} />
@@ -59,6 +59,9 @@ const Home = ({ navigation }) => {
         </TouchableOpacity>
         <TouchableOpacity onPress={torchOn}>
           <Image style={Homestyle.icons} source={require('./Icons/flash.png')} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => utApps("Password")}>
+          <Image style={Homestyle.icons} source={require('./Icons/password-manager.png')} />
         </TouchableOpacity>
       </View>
     </View>

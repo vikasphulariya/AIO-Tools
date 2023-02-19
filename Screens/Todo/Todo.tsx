@@ -1,4 +1,8 @@
-import { View, Text, StyleSheet, KeyboardAvoidingView, FlatList, Platform, TextInput, TouchableOpacity, Keyboard, Alert, ToastAndroid } from 'react-native'
+import { View, Text, StyleSheet, KeyboardAvoidingView,
+     FlatList, Platform, TextInput,
+      TouchableOpacity, Keyboard, Alert, 
+      ToastAndroid ,StatusBar
+    } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import Task from './Components/task'
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -60,7 +64,7 @@ saveTodo();
     const handletask = () => {
         // console.log(task);
         if (task == '') {
-            ToastAndroid.show('please Enter A task',ToastAndroid.SHORT );
+            ToastAndroid.show('Please Enter Something',ToastAndroid.SHORT );
           } else {
         Keyboard.dismiss();
         // setTask(text)
@@ -123,6 +127,7 @@ saveTodo();
 const styles = StyleSheet.create({
     contain: {
         flex: 1,
+        marginTop: StatusBar.currentHeight
     },
     header: {
         paddingTop: 30,
@@ -148,7 +153,7 @@ const styles = StyleSheet.create({
     },
     keybordavoid: {
         position: 'absolute',
-        bottom: 60,
+        bottom: 40,
         width: "100%",
         flexDirection: 'row',
         justifyContent: 'space-around',

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Platform, Text, View, StyleSheet, Image, TouchableOpacity, FlatList } from 'react-native';
-import * as Location from 'expo-location';
+import { StatusBar, Text, View, StyleSheet, Image, TouchableOpacity, FlatList } from 'react-native';
 import SavedNotes from './Components/SavedNotes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';
@@ -117,6 +116,7 @@ export default function Notes({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        marginTop: StatusBar.currentHeight
         // alignContent: 'center',
         // padding: 20,
     },

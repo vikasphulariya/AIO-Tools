@@ -1,31 +1,23 @@
-import { View, Text, TextInput, StatusBar,TouchableOpacity,StyleSheet } from 'react-native'
-import React, { useEffect, useState, } from 'react'
+import { View, Text, TextInput, StyleSheet, Touchable, TouchableOpacity } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-export default function ViewNote({route,navigation}) {
+export default function NewPassword({ navigation }) {
 
     const [title, setTitle] = useState('')
     const [disc, setDisc] = useState('')
-    const [noteList, setNoteList] = useState([])
+    const [website, setWebsite] = useState('')
+    const [PasswordList, setPasswordList] = useState([])
 
     useEffect(() => {
-        getNotesFromUserDevice();
-        setDisc(route.params.qrd.item.d)
-        setTitle(route.params.qrd.item.t)
-        // console.log(route.params.qrd.index)
-        
-        // deleteNote(route.params.qrd.index)
+        getPasswordFromUserDevice();
       }, []);
-      const deleteNote = (index) => {
-        // console.log(index);
-        
-    }
-      const getNotesFromUserDevice =async()=>{
+
+      const getPasswordFromUserDevice =async()=>{
         try {
-            const notesdata = await AsyncStorage.getItem('Notes');
-            if (notesdata != null) {
-                setNoteList(JSON.parse(notesdata));
-                // console.log("starting",JSON.parse(notesdata));
+            const Passworddata = await AsyncStorage.getItem('Password');
+            if (Passworddata != null) {
+              setPasswordList(JSON.parse(Passworddata));
               // console.log(taskItems);
             }
           } catch (error) {
@@ -33,24 +25,21 @@ export default function ViewNote({route,navigation}) {
           }
       }
     // useEffect(() => {
-    //     saveNoteToDevice();
-    //     },[noteList]);
+    //     savePasswordToDevice();
+    //     },[PasswordList]);
 
-    const saveNoteToDevice =async(index)=>{
+    const savePasswordToDevice =async()=>{
+        // console.log("dfs")
         try{
-            let tempk = [...noteList];
-            tempk.splice(index, 1);
-            // console.log("edit",tempk)
-            // console.log(temp);
-            setNoteList(tempk);   
-            const notedata={
+            const Passworddata={
+                w:website,
                 t:title,
-                d:disc
+                d:disc,
             }
-            let temp=[...tempk,notedata]
-            setNoteList([...tempk,notedata])
-            const notedatatodevice= JSON.stringify(temp)
-            await AsyncStorage.setItem('Notes', notedatatodevice);
+            let temp=[...PasswordList,Passworddata]
+            setPasswordList([...PasswordList,Passworddata])
+            const Passworddatatodevice= JSON.stringify(temp)
+            await AsyncStorage.setItem('Password', Passworddatatodevice);
             navigation.goBack();
         }
         catch(err) {
@@ -59,12 +48,16 @@ export default function ViewNote({route,navigation}) {
     }
 
     return (
-        <View style={{  marginTop:StatusBar.currentHeight}}>
+        <View>
+            <TextInput value={website}
+                placeholder='Website/App' 
+                onChangeText={(value) => setWebsite(value)}
+                style={Styles.titl} />
             <TextInput value={title}
-                placeholder='Note Title'
+                placeholder='Username' 
                 onChangeText={(value) => setTitle(value)}
                 style={Styles.titl} />
-            <TextInput placeholder='Note Description'
+            <TextInput placeholder='Password'
             value={disc}
                 style={Styles.Describe}
                 editable={title.length!=0?true:false}
@@ -79,7 +72,7 @@ export default function ViewNote({route,navigation}) {
                     <Text style={Styles.btn} >✕</Text>
                 </TouchableOpacity>
                 <TouchableOpacity disabled={disc.length==0?true:false} onPress={() => {
-                    saveNoteToDevice(route.params.qrd.index);
+                    savePasswordToDevice();
                 }}>
 
                     <Text style={Styles.btn}>✓</Text>
@@ -96,8 +89,6 @@ const Styles = StyleSheet.create({
         borderRadius: 15,
         margin: '3%',
         elevation: 5,
-       
-         
     },
     Describe: {
         backgroundColor: '#fff',
