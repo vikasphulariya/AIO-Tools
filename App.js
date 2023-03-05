@@ -21,6 +21,7 @@ import ViewPassword from './Screens/Password/viewPassword';
 import Clock from './Screens/clock';
 import Password from './Screens/Password/password';
 import NewPassword from './Screens/Password/newPassword';
+import Tictactoe from './Screens/tic-tac-toe/tic-tac-toe';
 // import StateWise from './Components/Screens/StateWise';
 // import India from './Components/Screens/India';
 
@@ -45,6 +46,7 @@ function App() {
         <Stack.Screen name="Add a Password" component={NewPassword} options={{headerShown:true}}/>
         <Stack.Screen name="StopWatch" component={Clock} options={{headerShown:false}}/>
         <Stack.Screen name="Password" component={Password} options={{headerShown:false}}/>
+        <Stack.Screen name="tic-tac-toe" component={Tictactoe} options={{headerShown:false}}/>
         {/* <Stack.Screen name="India" component={India} options={{headerShown:false}} />
         <Stack.Screen name="StateWise" component={StateWise} options={{headerShown:false}} /> */}
 

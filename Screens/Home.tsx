@@ -63,6 +63,10 @@ const Home = ({ navigation }) => {
         <TouchableOpacity onPress={() => utApps("Password")}>
           <Image style={Homestyle.icons} source={require('./Icons/password-manager.png')} />
         </TouchableOpacity>
+        <TouchableOpacity onPress={() => utApps("tic-tac-toe")}>
+          <Image style={[Homestyle.icons,{width: 60,
+        height: 60,}]} source={require('./Icons/tic-tac-toe.png')} />
+        </TouchableOpacity>
       </View>
     </View>
   )
