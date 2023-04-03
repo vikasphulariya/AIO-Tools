@@ -1,16 +1,18 @@
-import { View, Text, TextInput, Image, StatusBar, StyleSheet, TouchableOpacity, ToastAndroid } from 'react-native'
+import { View, Text, TextInput, Image, StatusBar, StyleSheet, TouchableOpacity, ToastAndroid, BackHandler } from 'react-native'
 import React, { useState, memo } from 'react'
 import Clipboard from '@react-native-community/clipboard';
 import QRCode from 'react-native-qrcode-svg';
+import { useFocusEffect } from '@react-navigation/native';
 // import { styles } from '../clock/stopwatch';
 
-const QRgen = () => {
+const QRgen = ({navigation}) => {
 
-    const [qrval, setqrval] = useState("https://www.google.com/")
+    
+    const [qrval, setqrval] = useState("")
     function changeqr(value) {
 
         if (value == "") {
-            setqrval("https://www.google.com/")
+            setqrval("")
         }
         else {
             setqrval(value)
@@ -51,6 +53,7 @@ const QRgen = () => {
         <View style={{ alignContent: "center", alignItems: "center", marginTop: StatusBar.currentHeight }}>
             <View style={styles.topBarView}>
                 <TextInput placeholder='Enter Text'
+                value={qrval}
                     onChangeText={(value) => changeqr(value)}
                     style={styles.topBarText}></TextInput>
                 <TouchableOpacity onPress={fetchCopiedText}>
@@ -64,8 +67,8 @@ const QRgen = () => {
 
 
                 <View style={{ alignContent: "center", alignItems: "center", borderRadius: 10, marginTop: "17%" }}>
-
-                    <QRCode value={qrval} size={300} />
+{qrval.length>1?<QRCode value={qrval} size={300}/>: <QRCode value={'https://play.google.com/store/apps/details?id=com.vikasphulriya.AIOTools'}  size={300} />}
+                    {/* <QRCode value={qrval} size={300} /> */}
                 </View>
 
             </View>

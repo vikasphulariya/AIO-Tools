@@ -23,8 +23,8 @@ function MainContainer() {
           tabBarStyle:[{height:'8%'}]
         }}  
         >
+        <Tab.Screen name={"QR Generator"} component={QRgen} options={{headerShown:false}}/>
         <Tab.Screen name={"QR Scan"} component={QRScan} options={{headerShown:false}}/>
-        <Tab.Screen name={"QR Generator"} component={QRgen} options={{headerShown:false,}}/>
         {/* <Tab.Screen name={settingsName} component={SettingsScreen} /> */}
 
       </Tab.Navigator>

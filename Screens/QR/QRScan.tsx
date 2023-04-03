@@ -1,12 +1,31 @@
-import { View, Text, StatusBar, StyleSheet, ToastAndroid } from 'react-native'
+import { View, Text, StatusBar, StyleSheet, ToastAndroid, BackHandler } from 'react-native'
 import React, { useState, useEffect, } from 'react'
 import { BarCodeScanner } from 'expo-barcode-scanner';
-import { useIsFocused } from '@react-navigation/native';
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 const QRScan = ({ navigation }) => {
   const [isTorchOn, setIsTorchOn] = useState(false);
   const [Scanned, setScanned] = useState(false)
   const [per, setPer] = useState(false)
   const [qrd, setqrd] = useState('');
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        // console.log('onBackPress');
+        navigation.navigate('QR Generator')
+        // navigation.popToTop()
+      };
+
+      const subscription = BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+      return () => subscription.remove();
+    }, [])
+  );
+
+  // ...
+
+
+
 
 
   const isFocused = useIsFocused();
@@ -45,7 +64,7 @@ const QRScan = ({ navigation }) => {
   }
     return (
       <View style={{ flex: 1,justifyContent:'center',alignContent:'center',alignItems:'center' }}>
-        <View style={{elevation:15, borderRadius: 10,width:'93%', borderColor: 'black', height: '66.6%' ,justifyContent:'center',alignContent:'center',alignItems:'center'}}>
+        <View style={{width:'70%',borderRadius:10}}>
         
           {isFocused?<BarCodeScanner 
             onBarCodeScanned={Scanned ? undefined :(e)=> {
@@ -54,10 +73,10 @@ const QRScan = ({ navigation }) => {
             style={{
               height: '100%',
               width: '100%',
-              borderRadius:10,
-              elevation: 10,
-              borderWidth:20,
-              borderBottomColor: 'black',
+              // borderRadius:10,
+              // elevation: 10,
+              // borderWidth:20,
+              // borderBottomColor: 'black',
             }}
           />:null}
 

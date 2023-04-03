@@ -1,18 +1,22 @@
 import { View, Text, TextInput, StatusBar,TouchableOpacity,StyleSheet,Image } from 'react-native'
 import React, { useEffect, useState, } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import { styles } from '../clock/stopwatch'
+
 
 export default function ViewPassword({route,navigation}) {
 
     const [title, setTitle] = useState('')
     const [disc, setDisc] = useState('')
-    const [noteList, setNoteList] = useState([])
+    const [website, setWebsite] = useState('')
+    const [PasswordList, setPasswordList] = useState([])
     const [pswdVisible, setPswdVisible] = useState(true)
     useEffect(() => {
-        getNotesFromUserDevice();
+        getLockPasswordFromUserDevice();
         setDisc(route.params.qrd.item.d)
         setTitle(route.params.qrd.item.t)
+        setWebsite(route.params.qrd.item.w)
         // console.log(route.params.qrd.index)
         
         // deleteNote(route.params.qrd.index)
@@ -21,12 +25,12 @@ export default function ViewPassword({route,navigation}) {
         // console.log(index);
         
     }
-      const getNotesFromUserDevice =async()=>{
+      const getLockPasswordFromUserDevice =async()=>{
         try {
-            const notesdata = await AsyncStorage.getItem('Notes');
-            if (notesdata != null) {
-                setNoteList(JSON.parse(notesdata));
-                // console.log("starting",JSON.parse(notesdata));
+            const LockPassworddata = await AsyncStorage.getItem('Password');
+            if (LockPassworddata != null) {
+                setPasswordList(JSON.parse(LockPassworddata));
+                // console.log("starting",JSON.parse(LockPassworddata));
               // console.log(taskItems);
             }
           } catch (error) {
@@ -35,23 +39,25 @@ export default function ViewPassword({route,navigation}) {
       }
     // useEffect(() => {
     //     saveNoteToDevice();
-    //     },[noteList]);
+    //     },[PasswordList]);
 
     const saveNoteToDevice =async(index)=>{
+        // console.log(index);
         try{
-            let tempk = [...noteList];
+            let tempk = [...PasswordList];
             tempk.splice(index, 1);
             // console.log("edit",tempk)
             // console.log(temp);
-            setNoteList(tempk);   
-            const notedata={
+            setPasswordList(tempk);   
+            const Passworddata={
+                w:website,
                 t:title,
-                d:disc
+                d:disc,
             }
-            let temp=[...tempk,notedata]
-            setNoteList([...tempk,notedata])
-            const notedatatodevice= JSON.stringify(temp)
-            await AsyncStorage.setItem('Notes', notedatatodevice);
+            let temp=[...tempk,Passworddata]
+            setPasswordList([...tempk,Passworddata])
+            const Passworddatatodevice= JSON.stringify(temp)
+            await AsyncStorage.setItem('Password', Passworddatatodevice);
             navigation.goBack();
         }
         catch(err) {
@@ -60,7 +66,19 @@ export default function ViewPassword({route,navigation}) {
     }
 
     return (
-        <View style={{  marginTop:StatusBar.currentHeight+100}}>
+        <SafeAreaView style={{justifyContent: 'center',
+        // alignItems: 'center',
+        alignContent: 'center', }}>
+
+        <View style={{justifyContent: 'center',
+        alignItems: 'center',
+        alignContent: 'center', }}>
+            <Text style={Styles.title}> {website} Password</Text>
+            {/* <TextInput value={website}
+                placeholder='Website/App' 
+                onChangeText={(value) => setWebsite(value)}
+                style={Styles.titl} /> */}
+
             <TextInput value={title}
                 onChangeText={(value) => setTitle(value)}
                 style={Styles.titl} />
@@ -94,6 +112,7 @@ export default function ViewPassword({route,navigation}) {
                 </TouchableOpacity>
             </View>
         </View>
+                    </SafeAreaView>
     )
 }
 const Styles = StyleSheet.create({
@@ -105,7 +124,7 @@ const Styles = StyleSheet.create({
         margin: '3%',
         elevation: 5,
        
-         
+        
     },
     Describe: {
         backgroundColor: '#fff',
@@ -142,4 +161,16 @@ const Styles = StyleSheet.create({
         elevation: 5,
         paddingTop:10,
     },
+    title:{
+        margin: 10,
+        width:'100%',
+        // backgroundColor:'#fff',
+        textAlign: 'left',
+        paddingLeft:'3%',
+        // justifyContent: 'center',
+        // alignItems: 'center',
+        // alignContent: 'center',
+        fontSize: 32,
+    }
+    
 })

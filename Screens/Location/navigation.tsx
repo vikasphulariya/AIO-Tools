@@ -59,7 +59,13 @@ saveLocToDevice();
       }
     }
     else{
-      getLoc()
+      if(locName.length>2){
+
+        getLoc()
+      }
+      else{
+        ToastAndroid.show("Please enter a location Name", 100)
+      }
     }
   }
   const getLoc = async () => {
@@ -82,7 +88,7 @@ saveLocToDevice();
   }
 
 
-  const deleteNote = (index) => {
+  const deleteLocation = (index) => {
     // console.log(index);
     let temp = [...savedLocations];
     temp.splice(index, 1);
@@ -118,7 +124,7 @@ const VisitMap =async(mapurl)=>{
                             </TouchableOpacity>
                           </View>
                           <View>
-                            <TouchableOpacity onPress={()=>deleteNote(item.index)}> 
+                            <TouchableOpacity onPress={()=>deleteLocation(item.index)}> 
 
                             <Image style={styles.icon} source={require('./Components/dele.png')} />
                             </TouchableOpacity>
