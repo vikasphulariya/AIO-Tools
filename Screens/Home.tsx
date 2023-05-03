@@ -1,8 +1,9 @@
 
 
-import React, { useState, useCallback, memo } from 'react';
+import React, { useState, useCallback, memo,useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import type { PropsWithChildren } from 'react';
+import auth from '@react-native-firebase/auth';
 import {
   View,
   Image,
@@ -17,6 +18,21 @@ type SectionProps = PropsWithChildren<{
 
 const Home = ({ navigation }) => {
 
+
+  useEffect(() => {
+   
+    const unsubscribe = auth().onAuthStateChanged(user => {
+      if (user) {
+        // navigation.replace("Home")
+      }
+      else{
+        navigation.replace("User");
+      }
+    })
+
+    return unsubscribe
+  }, [])
+
   const [isTorchOn, setIsTorchOn] = useState(false);
   const torchOn = () => {
     // Vibration.vibrate(1001,true);
@@ -30,7 +46,7 @@ const Home = ({ navigation }) => {
     []
   )
   return (
-    <View>
+    <View style={{flex:1}}>
       <StatusBar style="dark" />
       <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', margin: 10 ,flexWrap:'wrap'}}>
         <TouchableOpacity onPress={() => utApps("Calculator")}>
@@ -48,9 +64,9 @@ const Home = ({ navigation }) => {
       {/* </View>
       <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', margin: 10 }}> */}
 
-        <TouchableOpacity onPress={() => utApps("Notes")}>
-          <Image style={Homestyle.icons} source={require('./Icons/notes.png')} />
-        </TouchableOpacity>
+          <TouchableOpacity onPress={() => utApps("Notes")}>
+            <Image style={Homestyle.icons} source={require('./Icons/notes.png')} />
+          </TouchableOpacity>
         <TouchableOpacity onPress={() => utApps("Todo")}>
           <Image style={Homestyle.icons} source={require('./Icons/todo.png')} />
         </TouchableOpacity>
@@ -64,10 +80,30 @@ const Home = ({ navigation }) => {
           <Image style={Homestyle.icons} source={require('./Icons/password-manager.png')} />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => utApps("tic-tac-toe")}>
-          <Image style={[Homestyle.icons,{width: 60,
-        height: 60,}]} source={require('./Icons/tic-tac-toe.png')} />
+          <Image style={[Homestyle.icons,{}]} source={require('./Icons/tic-tac-toe.png')} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => utApps("PDF")}>
+          <Image style={[Homestyle.icons,{}]} source={require('./Icons/pdf.png')} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => utApps("Weather")}>
+          <Image style={[Homestyle.icons,{}]} source={require('./Icons/weather.png')} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => utApps("India")}>
+          <Image style={[Homestyle.icons,{}]} source={require('./Icons/covid.png')} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => utApps("BMI")}>
+          <Image style={[Homestyle.icons,{}]} source={require('./Icons/bmi.png')} />
         </TouchableOpacity>
       </View>
+      {/* <View style={{position:'absolute',bottom:20,
+      right:20,borderRadius:50,elevation:20}}> */}
+        <TouchableOpacity onPress={() => utApps("Home")}  style={{position:'absolute',bottom:20,
+      right:20,borderRadius:50,elevation:20}}>
+
+      <Image style={{height: 90,alignSelf:'center',
+        aspectRatio:1}} source={require('./Icons/user.png')}/>
+        </TouchableOpacity>
+      {/* </View> */}
     </View>
   )
 }

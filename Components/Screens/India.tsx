@@ -5,22 +5,55 @@ import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { SafeAreaView } from 'react-native-safe-area-context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function India({navigation}) {
     const [India, setIndia] = useState([])
 
     const [fetched, setFetched] = useState(false)
     useEffect(() => {
+        getCasesFromUserDevice();
         handledemp()
-        
-
     }, [])
 
+    const getCasesFromUserDevice = async () => {
+        try {
+            console.log("fd")
+          const cases = await AsyncStorage.getItem('IndiaCases');
+          if (cases != null) {
+            setIndia(JSON.parse(cases));
+
+            console.log("Data Available: ",JSON.parse(cases));
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
+
+    const saveCases = async (t) => {
+        try {
+            const stringifyCases = JSON.stringify(t);
+            // console.log(stringifyTodos)
+            await AsyncStorage.setItem('IndiaCases', stringifyCases);
+            console.log('Cases saved successfully')
+          } catch (error) {
+            console.log(error);
+          }
+
+    }
 
     const handledemp = async () => {
         // covidData.splice(0, covidData.length)
         console.log('esd')
         // const data = await axios.get("https://www.mygov.in/sites/default/files/covid/covid_state_counts_ver1.json",)
-        const response = await fetch('https://www.mygov.in/sites/default/files/covid/covid_state_counts_ver1.json', {mode:'no-cors'});
+        const response= await fetch('https://www.mygov.in/sites/default/files/covid/covid_state_counts_ver1.json', );
+        // try{
+        //     response = await fetch('https://www.mygov.in/sites/default/files/covid/covid_state_counts_ver1.json', );
+        // }
+        // catch(r){
+        //     getCasesFromUserDevice();
+        // }
+
         // console.log(await response.json())
         const data = await response.json()
         // const data = await axios("https://www.mygov.in/sites/default/files/covid/covid_state_counts_ver1.json", {
@@ -81,6 +114,7 @@ export default function India({navigation}) {
         }
         console.log("Data Feteched",temp);
         setIndia(temp);
+        saveCases(temp)
     }
 
 
@@ -91,7 +125,7 @@ export default function India({navigation}) {
     <StatusBar style="dark" />
 <View style={styles.header}>
 
-      <Text style={{fontSize:25,fontWeight:'900',marginVertical:10,textAlign:'left'}}>India Covid-19 States</Text>
+      <Text style={{fontSize:25,fontWeight:'900',marginVertical:10,textAlign:'left'}}>India Covid-19 Stat's</Text>
       <TouchableOpacity onPress={()=>{
         
           handledemp()
@@ -141,7 +175,7 @@ backgroundColor:'#6ff774',}]}>
         <View style={[styles.TotalCases,{borderColor:'#bf1a08',
 backgroundColor:'#e87b7b',}]}>
 
-            <Text style={styles.DataText}>Death Radtio</Text>
+            <Text style={styles.DataText}>Death Ratio</Text>
             <Text style={styles.DataText}> {India["DeRatio"]} %</Text>
             <View style={[styles.line,{backgroundColor:'#c41f1f',elevation:1}]}></View>
         </View>

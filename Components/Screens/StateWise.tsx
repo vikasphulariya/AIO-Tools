@@ -3,6 +3,7 @@ import { FlatList, Modal, StyleSheet, Text, TextInput, View,TouchableOpacity,Tou
 import axios from 'axios';
 import Inidividual from './Inidividual';
 import React, { useState, useEffect } from 'react'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 // import { SafeAreaView } from 'react-native-safe-area-context/lib/typescript/SafeAreaView';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -14,17 +15,61 @@ export default function StateWise({ navigation, route }) {
     const [SortD, setSortD] = useState('States')
     const [fetched, setFetched] = useState(false)
     useEffect(() => {
+        getCasesFromUserDevice()
+        
+    }, [])
+    
+    useEffect(() => {
         handledemp()
-
+        
     }, [])
 
+    useEffect(() => {
+       
 
+    }, [covidData])
+
+
+    const getCasesFromUserDevice = async () => {
+        try {
+            console.log("fd")
+          const cases = await AsyncStorage.getItem('StateCases');
+          if (cases != null) {
+            setCovidData(JSON.parse(cases));
+            setCovidDataCpy(JSON.parse(cases));
+            setFetched(true)
+            console.log("Data Available: ",JSON.parse(cases));
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
+
+      const saveCases = async (t) => {
+        try {
+            const stringifyCases = JSON.stringify(t);
+            // console.log(stringifyTodos)
+            await AsyncStorage.setItem('StateCases', stringifyCases);
+            console.log('Cases saved successfully')
+          } catch (error) {
+            console.log(error);
+          }
+
+    }
     const handledemp = async () => {
         covidData.splice(0, covidData.length)
         covidDataCpy.splice(0, covidDataCpy.length)
         console.log('esd')
+        try{
+
         const data = await axios.get("https://www.mygov.in/sites/default/files/covid/covid_state_counts_ver1.json")
+        
         const vacindata = await axios.get("https://www.mygov.in/sites/default/files/covid/vaccine/vaccine_counts_today.json")
+
+        console.log("coivde Data Empty")
+        covidData.splice(0,covidData.length)
+        covidDataCpy.splice(0,covidDataCpy.length)
         // cosnt 
         const tempvacin = vacindata.data.vacc_st_data;
         // console.log(vacindata.data.vacc_st_data);
@@ -66,8 +111,14 @@ export default function StateWise({ navigation, route }) {
             covidDataCpy.push(temp);
 
         }
-        console.log("Data Feteched", totaldeaths);
+
+        console.log("Data Feteched", totaldeaths,covidData);
         setFetched(true);
+        saveCases(covidData)
+    }
+    catch(e){
+        console.log("no net",covidData)
+    }
     }
 
 
@@ -96,7 +147,7 @@ export default function StateWise({ navigation, route }) {
                 {/* <Text onPress={()=>{console.log(covidData)}}>Open up App.js to start working on your app!</Text> */}
                 <View style={{ justifyContent: 'center', alignItems: 'center', alignContent: 'center', elevation: 10 }}>
 
-                    <Text style={{ fontSize: 24, padding: 10 }}>State Wise covid Data</Text>
+                    <Text onPress={()=>{console.log(covidData)}} style={{ fontSize: 24, padding: 10 }}>State Wise covid Data</Text>
                     <View style={{ marginLeft: 30, flexDirection: 'row', width: '95%', justifyContent: 'space-between', alignContent: 'center', alignItems: 'center' }}>
                         <TextInput placeholder='Search For State'
                             onChangeText={(value) => {
@@ -298,7 +349,7 @@ export default function StateWise({ navigation, route }) {
                                 )
                             }} />
                     </View>
-                    : <Text style={{ marginVertical: 200, fontSize: 20 }}> Please Wait Loading Data Make Sure Internet IS Working</Text>}
+                    : <Text style={{ marginVertical: 200, fontSize: 20,alignSelf:'center' }}> Please Wait Loading Data Make Sure Internet is Working</Text>}
 
                 {/* </View> */}
                 <View>
@@ -345,6 +396,6 @@ const styles = StyleSheet.create({
         backgroundColor:'#fff',
         borderRadius:10,
         paddingHorizontal:10,
-        width:110,
+        // width:110,
     },
 });

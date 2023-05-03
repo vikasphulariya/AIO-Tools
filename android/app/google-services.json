@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "67090879529",
+    "project_id": "all--in-one",
+    "storage_bucket": "all--in-one.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:67090879529:android:ae76dc5acb62f99794b838",
+        "android_client_info": {
+          "package_name": "com.vikasphulriya.AIOTools"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "67090879529-7b7eogvc1g878p0r6n0qafec2kkkp7h0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vikasphulriya.AIOTools",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "67090879529-g8hpt94j55kia5l6pbqahv7cj98r3fke.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpeejATAD9YJy-PBtZ-lJq1JvKiKfjkng"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "67090879529-g8hpt94j55kia5l6pbqahv7cj98r3fke.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

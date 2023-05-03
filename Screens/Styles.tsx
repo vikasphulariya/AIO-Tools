@@ -6,7 +6,7 @@ const Homestyle = StyleSheet.create({
         width: 70,
         height: 70,
         margin: 10,
-        borderRadius: 12,
+        // borderRadius: 12,
     },
     splashview: {
         backgroundColor: "black", 

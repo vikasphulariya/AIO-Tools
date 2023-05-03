@@ -1,0 +1,125 @@
+import { View, Text, StatusBar, StyleSheet, ToastAndroid, BackHandler } from 'react-native'
+import React, { useState, useEffect, } from 'react'
+import { BarCodeScanner } from 'expo-barcode-scanner';
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
+import Lottie from 'lottie-react-native';
+const QRScan = ({ navigation }) => {
+  const [isTorchOn, setIsTorchOn] = useState(false);
+  const [Scanned, setScanned] = useState(false)
+  const [per, setPer] = useState(false)
+  const [qrd, setqrd] = useState('');
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        // console.log('onBackPress');
+        navigation.navigate('QR Generator')
+        // navigation.popToTop()
+      };
+
+      const subscription = BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+      return () => subscription.remove();
+    }, [])
+  );
+
+  // ...
+
+
+
+
+
+  const isFocused = useIsFocused();
+    useEffect(() => {
+        setScanned(false)
+    }, [isFocused]);
+  function onSuccess(e) {
+    ToastAndroid.showWithGravity(
+      'Scan Successfull',
+      ToastAndroid.SHORT,
+      ToastAndroid.CENTER,
+    );
+    navigation.navigate("QR Data", {
+      qrd: e.data
+    })
+    
+  };
+  const [fl, setfl] = useState(false);
+  const changefl = () => {
+    setfl(!fl);
+  };
+  const onFailure =async()=> {
+   const {status} = await BarCodeScanner.requestPermissionsAsync();
+  //  console.log(status);
+   setPer(status==='granted');
+  }
+  onFailure();
+  if (!per){
+     onFailure();
+     if(!per){
+    return(
+      <View style={{marginTop: StatusBar.currentHeight,justifyContent:'center',alignContent:'center',alignItems:'center',flex:1}}>
+        <Lottie
+        source={require('./9253-camera.json')} autoPlay loop />
+        <Text>Waiting for permission</Text>
+      </View>
+    )}
+  }
+    return (
+      <View style={{ flex: 1,justifyContent:'center',alignContent:'center',alignItems:'center' }}>
+        <View style={{width:'70%',borderRadius:10}}>
+        
+          {isFocused?<BarCodeScanner 
+            onBarCodeScanned={Scanned ? undefined :(e)=> {
+              setScanned(true)
+              onSuccess(e)}}
+            style={{
+              height: '100%',
+              width: '100%',
+              // borderRadius:10,
+              // elevation: 10,
+              // borderWidth:20,
+              // borderBottomColor: 'black',
+            }}
+          />:null}
+
+        </View>
+        <View style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          alignContent: 'center',
+          position: 'absolute', //Here is the trick
+          bottom: 10,
+          width: '100%',
+          height: 'auto',
+        }}>
+          {/* <TouchableOpacity onPress={}>
+
+            <Text style={{ borderWidth: 3, borderRadius: 10, marginTop: "10%", fontSize: 30, backgroundColor: "pink", paddingHorizontal: 5, color: "black" }}>Flash</Text>
+          </TouchableOpacity> */}
+
+        </View>
+      </View>
+    )
+}
+const styles = StyleSheet.create({
+  centerText: {
+    flex: 1,
+    fontSize: 18,
+    padding: 32,
+    color: '#777'
+  },
+  textBold: {
+    fontWeight: '500',
+    color: '#000'
+  },
+  buttonText: {
+    fontSize: 21,
+    color: 'rgb(0,122,255)',
+  },
+  buttonTouchable: {
+    padding: 16
+  }
+});
+
+export default QRScan

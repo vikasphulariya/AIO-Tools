@@ -22,9 +22,15 @@ import Clock from './Screens/clock';
 import Password from './Screens/Password/password';
 import NewPassword from './Screens/Password/newPassword';
 import Tictactoe from './Screens/tic-tac-toe/tic-tac-toe';
-// import StateWise from './Components/Screens/StateWise';
-// import India from './Components/Screens/India';
-
+// import Pdf from './Screens/img2pdf/Pdf';
+import PDF from './Screens/img2pdf/Pdf';
+import Emp from './Screens/img2pdf/emp';
+import WeatherHome from './Screens/Weather/WeatheHome';
+import StateWise from './Components/Screens/StateWise';
+import India from './Components/Screens/India';
+import Login from './Screens/user/Login';
+import UserProfile from './Screens/user/User';
+import BMI from './Screens/Bmi';
 const Stack = createNativeStackNavigator();
 
 function App() {
@@ -47,8 +53,14 @@ function App() {
         <Stack.Screen name="StopWatch" component={Clock} options={{headerShown:false}}/>
         <Stack.Screen name="Password" component={Password} options={{headerShown:false}}/>
         <Stack.Screen name="tic-tac-toe" component={Tictactoe} options={{headerShown:false}}/>
-        {/* <Stack.Screen name="India" component={India} options={{headerShown:false}} />
-        <Stack.Screen name="StateWise" component={StateWise} options={{headerShown:false}} /> */}
+        <Stack.Screen name="PDF" component={PDF} options={{headerShown:false}}/>
+        <Stack.Screen name="Weather" component={WeatherHome} options={{headerShown:false}}/>
+        {/* <Stack.Screen name="Emp" component={Emp} options={{headerShown:false}}/> */}
+        <Stack.Screen name="India" component={India} options={{headerShown:false}} />
+        <Stack.Screen name="StateWise" component={StateWise} options={{headerShown:false}} />
+        <Stack.Screen name="User" component={Login} options={{headerShown:false}} />
+        <Stack.Screen name="Home" component={UserProfile} options={{headerShown:false}} />
+        <Stack.Screen name="BMI" component={BMI} options={{headerShown:false}} />
 
       </Stack.Navigator>
     </NavigationContainer>

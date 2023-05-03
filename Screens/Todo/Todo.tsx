@@ -4,18 +4,41 @@ import { View, Text, StyleSheet, KeyboardAvoidingView,
       ToastAndroid ,StatusBar
     } from 'react-native'
 import React, { useState, useEffect } from 'react'
+// import {db} from 'firebase';
+// import { db } from '../firebase';
 import Task from './Components/task'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+// import {firebase} from '../firebase'
+import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
+
+
+
 export default function Todo() {
     const [task, setTask] = useState('');
     const [taskItems, setTaskItems] = useState([]);
    
     useEffect(() => {
-        getTodosFromUserDevice();
+        // getTodosFromUserDevice();
+      }, []);
+    useEffect(() => {
+        loadData();
       }, []);
 
     useEffect(() => {
+        let a=auth().currentUser?.email
+        console.log(a)
+
 saveTodo();
+firestore()
+.collection('Users')
+.doc(auth().currentUser?.email).collection('Todos').doc('Data')
+.set({
+  name: taskItems,
+})
+.then(() => {
+  console.log('User added!');
+});
     },[taskItems]);
 
     const deleteAllTodos = () =>{
@@ -34,12 +57,27 @@ saveTodo();
           ]);}
     }
 
+    const loadData = async () => {
+        try {
+        const vyvjvk= await firestore()
+        .collection('Users')
+        .doc(auth().currentUser?.email).collection('Todos').doc('Data')
+        .get();
+        console.log(vyvjvk._data.name,taskItems)
+        setTaskItems(vyvjvk._data.name)
+          } catch (error) {
+            console.log(error);
+          }
+
+    }
+
     const saveTodo = async () => {
         try {
             const stringifyTodos = JSON.stringify(taskItems);
             // console.log(stringifyTodos)
             await AsyncStorage.setItem('todos', stringifyTodos);
-            // console.log('Todo saved successfully')
+            console.log('Todo saved successfully')
+           
           } catch (error) {
             console.log(error);
           }
@@ -50,6 +88,7 @@ saveTodo();
 
 
     const getTodosFromUserDevice = async () => {
+        //
         try {
           const todos = await AsyncStorage.getItem('todos');
           if (todos != null) {
@@ -61,14 +100,25 @@ saveTodo();
         }
       };
 
-    const handletask = () => {
+    const handletask = async() => {
         // console.log(task);
         if (task == '') {
             ToastAndroid.show('Please Enter Something',ToastAndroid.SHORT );
           } else {
+            // db.collection("vikas")
+            // .doc("todos")
+            // .set({
+            //    vaalue:taskItems})
+            // .then((()=>{
+            //     console.log('Task saved successfully');
+            // }))
+            
+    // const users = await firebase.firestore().collection('Users').get();
+        // console.log(users)
         Keyboard.dismiss();
         // setTask(text)
         setTaskItems([...taskItems, task]);
+       
         setTask('')}
     }
 
@@ -80,8 +130,6 @@ saveTodo();
     }
     return (
         <View style={styles.contain}>
-
-
             <View style={styles.header}>
                 <Text style={styles.headtitle}>Today's Task</Text>
                 <Text style={styles.delete} onPress={()=>{deleteAllTodos()   }}>Delete</Text>
