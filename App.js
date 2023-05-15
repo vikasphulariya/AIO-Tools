@@ -31,6 +31,8 @@ import India from './Components/Screens/India';
 import Login from './Screens/user/Login';
 import UserProfile from './Screens/user/User';
 import BMI from './Screens/Bmi';
+import Wordtopdf from './Screens/wordtopdf/wordtopdf';
+import WordPDF from './Screens/img2pdfcopy/WordPdf';
 const Stack = createNativeStackNavigator();
 
 function App() {
@@ -61,6 +63,8 @@ function App() {
         <Stack.Screen name="User" component={Login} options={{headerShown:false}} />
         <Stack.Screen name="Home" component={UserProfile} options={{headerShown:false}} />
         <Stack.Screen name="BMI" component={BMI} options={{headerShown:false}} />
+        <Stack.Screen name="WordtPDF" component={Wordtopdf} options={{headerShown:false}} />
+        <Stack.Screen name="WordPdf" component={WordPDF} options={{headerShown:false}} />
 
       </Stack.Navigator>
     </NavigationContainer>

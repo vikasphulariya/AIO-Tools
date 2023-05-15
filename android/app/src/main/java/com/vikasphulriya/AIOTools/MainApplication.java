@@ -1,6 +1,7 @@
 package com.vikasphulriya.AIOTools;
 
-import android.app.Application;
+// import android.app.Application;
+import androidx.multidex.MultiDexApplication;
 import android.content.Context;
 import android.content.res.Configuration;
 import androidx.annotation.NonNull;
@@ -19,8 +20,7 @@ import expo.modules.ReactNativeHostWrapper;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-
-public class MainApplication extends Application implements ReactApplication {
+public class MainApplication extends MultiDexApplication  implements ReactApplication {
   private final ReactNativeHost mReactNativeHost = new ReactNativeHostWrapper(
     this,
     new ReactNativeHost(this) {

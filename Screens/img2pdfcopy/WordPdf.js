@@ -11,10 +11,13 @@ import Pdf from 'react-native-pdf';
 import { v4 as uuidv4 } from 'uuid';
 import Lottie from 'lottie-react-native';
 import Loader from './loader';
+import * as DocumentPicker from 'expo-document-picker';
 
-export default function PDF() {
+import {DocumentView, RNPdftron, Config} from 'react-native-pdftron'
+export default function WordPDF() {
   const [localPdfPath, setLocalPdfPath] = useState("https://www.africau.edu/images/default/sample.pdf")
-  const source = { uri: localPdfPath, cache: false };
+  const [pdfLoc, setPdfLoc] = useState('')
+  const source = { uri: pdfLoc, cache: false };
   const [imagePath, setImagePath] = useState([])
   const [showImagePath, setShowImagePath] = useState([])
   const [stateChanged, setStateChanged] = useState(false)
@@ -25,7 +28,9 @@ export default function PDF() {
   const pastedURL = "https://file-examples.com/storage/fef89aabc36429826928b9c/2017/04/file_example_MP4_480_1_5MG.mp4"
   const [modalVisible, setModalVisible] = useState(false)
   const [downloadedSucess, setDownloadedSucess] = useState(false)
+const [toBeConverted, setToBeConverted] = useState('')
 //This function will request for Storage permission to save Files
+
   const requestStoragePermission = async () => {
     try {
       const granted = await PermissionsAndroid.request(
@@ -50,7 +55,7 @@ export default function PDF() {
       }
     } catch (err) {
 
-      console.warn(err);
+      console.warn(err,"vikaa");
     }
   };
 
@@ -85,24 +90,22 @@ export default function PDF() {
     const downloadsFolderPath= RNFetchBlob.fs.dirs.DownloadDir; //the folder location where we will be downaloading our file
     const fileName = `Converted_PDF${new Date().getMilliseconds()}.pdf`; //file name of our downloaded pdf
     
-    const downloadedFilePath = `${downloadsFolderPath}/AIO/${fileName}`; 
+    const downloadedFilePath = `${downloadsFolderPath}/AIO/wordtopdf/${fileName}`; 
     console.log(downloadedFilePath,"vikas");
     if(downloadedSucess){
       console.log("downloadedFilePath")
-      openDownloadedFile(downloadedFilePath,fileName)
-    }else{
-      
+      // openDownloadedFile(downloadedFilePath,fileName)
+    }else{ 
       setModalVisible(true)
   try {
     // RNFS.mkdir()
-    RNFS.mkdir(`file://${downloadsFolderPath}/AIO`)
+    RNFS.mkdir(`file://${downloadsFolderPath}/AIO/wordtopdf`)
     .then((result) => {
-      console.log('result', result)
+      console.log('directory created succefully', result)
     })
     .catch((err) => {
                 console.warn('err', err)
-              })
-              
+              })   
               RNFS.copyFile(localFilePath, downloadedFilePath)
               .then(() => {
                 setDownloadedSucess(true)
@@ -137,6 +140,70 @@ export default function PDF() {
     console.log(temp2.length, " ", temp.length);
   }
 
+
+  
+  const convert= (dd)=>{
+    setModalVisible(true)
+    RNPdftron.initialize('');
+    RNPdftron.getVersion().then((version) => {
+      console.log("Current PDFNet version:", version);
+    });
+    RNPdftron.getPlatformVersion().then((platformVersion) => {
+      console.log("App currently running on:", platformVersion);
+    });
+    RNPdftron.pdfFromOffice(dd, null).then((resultPdfPath) => {
+      console.log(resultPdfPath);
+      let k=resultPdfPath;
+      console.log(k);
+      setPdfLoc(k)
+      setShowPdf(true);
+      // setModalVisible(true);
+      const localFilePath =k; // the path of our localfile stored inside app's private storage
+      // console.log(localFilePath)
+      const downloadsFolderPath= RNFetchBlob.fs.dirs.DownloadDir; //the folder location where we will be downaloading our file
+      const fileName = `Converted_PDF${new Date().getMilliseconds()}.pdf`; //file name of our downloaded pdf
+      
+      const downloadedFilePath = `${downloadsFolderPath}/AIO/wordtopdf/${fileName}`; 
+      console.log(downloadedFilePath,"vikas",localFilePath);
+      try {
+        // RNFS.mkdir()
+        RNFS.mkdir(`file://${downloadsFolderPath}/AIO/wordtopdf`)
+        .then((result) => {
+          console.log('direcotry creadety success', result)
+        })
+        .catch((err) => {
+                    console.warn('err', err)
+                  })
+                  
+                  RNFS.copyFile(localFilePath, downloadedFilePath)
+                  .then(() => {
+                    setDownloadedSucess(true)
+                    setModalVisible(false)
+                    let k='file://'+downloadedFilePath
+                    setPdfLoc(downloadedFilePath)
+                    console.log(downloadedFilePath)
+                    setShowPdf(true)
+                    setConverted(true)
+                    // console.log(localDownloadedFile,"gsrgr",downloadedFilePath)
+                    // ToastAndroid.show(`File Saved Succesfully\n Under Downloads/${fileName}`,100)
+                    // openDownloadedFile(downloadedFilePath,fileName)
+                  })
+                  .catch((error) => {
+                    setModalVisible(false)
+        ToastAndroid.show('Error copying file: ', 100);
+        console.log(error,"dft")
+      });
+    } catch (error) {
+      setModalVisible(false)
+      ToastAndroid.show('Failed to copy file:', 100);
+    }
+      setConverted(true);
+
+    }).catch((error) => {
+      console.log(error)
+    });
+
+    }
   const myAsyncPDFFunction = async () => {
     try {
       const options = {
@@ -164,26 +231,15 @@ export default function PDF() {
   // This function will help to pick images from gallery
   const imagePicker = async () => {
     try{
-
-      const result = await launchImageLibrary(options = { MediaType: 'photo', selectionLimit: 0 });
-      // console.log(result)
-      setImage(result.assets[0].uri)
+      console.log('Loading images');
+    let data=await DocumentPicker.getDocumentAsync({type:"application/vnd.openxmlformats-officedocument.wordprocessingml.document"})
+    setConverted(false)
+    let k=data.uri.toString()
+    // console.log('Loading',data)
+    // console.log('Loadingd')
+    k=k.replace("file:///","")
+    setToBeConverted(k) //
       
-      let temp = [...imagePath]
-      // console.log(temp, "vikas", result.assets[0])
-      let temp2 = [...showImagePath]
-      result.assets.forEach(Element => {
-        
-      temp2 = [...temp2, {
-        image: Element.uri,
-        aspRatio: Element.width / Element.height
-      }]
-      temp = [...temp, Element.uri.replace('file://', '')]
-    })
-    // console.log(temp)
-    setImagePath(temp)
-    setShowImagePath(temp2)
-    // console.log("vikas", temp2)
   }
   catch(err){
 
@@ -198,8 +254,9 @@ export default function PDF() {
 
         <Text onPress={() => {
           // setShowPdf(!showPdf);
-        }} style={styles.headerTxt}>Convert Image To Pdf</Text>
-        {imagePath.length==0?null:
+          // console.log(source);
+        }} style={styles.headerTxt}>Convert Docx To Pdf</Text>
+        {toBeConverted.length==0?null:
         <TouchableOpacity style={{position:'absolute',
         borderRadius:30,right:20,top:13,elevation:15,padding:0,backgroundColor:'#fff'}}
         onPress={()=>{
@@ -223,49 +280,15 @@ export default function PDF() {
         <View style={{ marginBottom: 150, }} >
 
           {/* <Image source={{uri:"/data/user/0/com.vikasphulriya.AIOTools/cache/rn_image_picker_lib_temp_827f4743-d9cb-4ea7-900b-ee519dc7c1a6.jpg"}}/> */}
-          {imagePath.length != 0 ?
+          {toBeConverted.length != 0 ?
 
-            <View style={{ flexDirection: 'row' }}>
-
-              <FlatList
-                data={showImagePath}
-                renderItem={(item) => {
-                  // console.log(item.item);
-                  return (
-                    <View style>
-                      <Image source={{ uri: item.item.image }}
-                        // objectFit={'contain'}
-                        // resizeMode='fill'
-                        style={{
-                          // flex:1,
-                          width: '90%',
-                          height: undefined,
-                          aspectRatio: item.item.aspRatio,
-                          borderRadius: 15,
-                          alignSelf: 'center',
-                          marginTop: 10,
-                          resizeMode: 'cover'
-                        }}
-                      />
-                      <TouchableOpacity onPress={() => { deleteNote(item.index) }} style={{
-                        position: 'absolute',
-                        right: 30,
-                        top: 20,
-                      }}>
-
-                        <Image source={require('./delete.png')} style={{
-
-                          tintColor: 'red',
-                          aspectRatio: 1,
-                          height: 40,
-                          width: undefined
-                        }} />
-                      </TouchableOpacity>
-                      {/* <Text>{item.item}</Text> */}
-                    </View>
-
-                  )
-                }} />
+            <View style={{ height:'96%' }}>
+              {/* <Text>Vikas</Text> */}
+              <DocumentView 
+              
+  document={toBeConverted}
+/>
+              
             </View>
 
 
@@ -277,9 +300,10 @@ export default function PDF() {
                 imagePicker()
               }}>
 
-                <Image source={require("./gallery.png")} style={{ width: 200, height: 200, alignSelf: 'center' }} />
+                <Image source={require("./2306065.png")} style={{ width: 200, height: 200, alignSelf: 'center',}} />
+                {/* <Image source={require("./gallery.png")} /> */}
                 <Text style={[styles.footerTxt, { fontSize: 22,alignSelf:'center' }]}>
-                  Import Photos </Text>
+                  Import Document</Text>
               </TouchableOpacity>
 
             </View>
@@ -303,7 +327,7 @@ export default function PDF() {
             <Text style={{position:'absolute',fontSize:35,fontWeight:'900',top:1,right:20,color:'red'}} onPress={()=>{
               setShowPdf(false)
             }}>×</Text>
-            <Loader modalVisible={modalVisible} setModalVisible={setModalVisible} />
+            {/* <Loader modalVisible={modalVisible} setModalVisible={setModalVisible} /> */}
               <View style={styles.container}>
 
                 {/* <Text onPress={()=>{imagePicker()}}>Image</Text> */}
@@ -327,7 +351,9 @@ export default function PDF() {
                     }}
                     style={styles.pdf} />
                   :
-                  <Lottie source={require('./98194-loading.json')} autoPlay />}
+                  <Lottie source={require('./98194-loading.json')} autoPlay />
+                  // null
+                  }
 
               </View>
               {converted?
@@ -335,16 +361,21 @@ export default function PDF() {
                 borderRadius: 50, padding: 0, position: 'absolute',
                 bottom: 90,flexDirection:'row',width: '100%',backgroundColor:'red',
               }}>
-                <TouchableOpacity style={{position:'absolute',left:20,backgroundColor:'#fff',alignContent:'center',justifyContent:'center',padding:8,borderRadius:40}} onPress={() => { console.log(localDownloadedFile)
-                Sharing.shareAsync(`file://${localDownloadedFile}`)
+                <TouchableOpacity style={{position:'absolute',left:20,backgroundColor:'#fff',alignContent:'center',justifyContent:'center',padding:8,borderRadius:40}}
+                 onPress={() => { 
+                  console.log(pdfLoc)
+                Sharing.shareAsync(`file://${pdfLoc}`)
               // RNFetchBlob.android.actionViewIntent(localDownloadedFile, 'application/pdf');
             }} >
 
                   <Image source={require('./shar.png')} style={[,{aspectRatio:1,height:50,}]} />
                 </TouchableOpacity>
-                <TouchableOpacity style={{position:'absolute',right:20}} onPress={() => { requestStoragePermission() }} >
+                <TouchableOpacity style={{position:'absolute',right:20}} onPress={() => { 
+                  // requestStoragePermission()
+                  RNFetchBlob.android.actionViewIntent(pdfLoc, 'application/pdf');
+                 }} >
 
-                  <Image source={require('./download-circular-button.png')} style={[styles.icon,{}]} />
+                  <Image source={require('./vision.png')} style={[styles.icon,{}]} />
                 </TouchableOpacity>
               </View>
                  :null}
@@ -357,19 +388,20 @@ export default function PDF() {
 
 
         <TouchableOpacity 
-          style={[styles.converPdf, { backgroundColor: imagePath.length != 0 ? '#27f26b' : "#c5c7c9" }]
-          } onPressIn={() => {
-            if(imagePath.length!=0){
-
+          style={[styles.converPdf, { backgroundColor: toBeConverted.length != 0 ? '#27f26b' : "#c5c7c9" }]
+          } 
+          onPressIn={() => {
+            if(toBeConverted.length!=0){
               setShowPdf(true)
               // setConverted(false)
             }else{
-              ToastAndroid.show("Please Import\nPhotos First",100)
+              ToastAndroid.show("Please Import\nDocument First",100)
             }
           }}
           onPress={() => {
-            if(!converted && imagePath.length!=0){
-              myAsyncPDFFunction()
+            if(!converted && toBeConverted.length!=0){
+              console.log("Please Import");
+              convert(toBeConverted)
             }
             
           }}>
@@ -491,7 +523,7 @@ const styles = StyleSheet.create({
   },
   icon: {
     
-    backgroundColor: '#fff',
+    // backgroundColor: '#fff',
     borderRadius:50,
     width: 70,
     height: 70,

@@ -17,7 +17,7 @@ export default class BMI extends React.Component {
   };
 
   handleCalculate = () => {
-    let imc = (this.state.mass * 703) / this.state.height ** 2;
+    let imc = (this.state.mass ) / ((this.state.height)/100)** 2;
     this.setState({
       resultNumber: imc.toFixed(2)
     });
@@ -53,7 +53,7 @@ export default class BMI extends React.Component {
           </Text>
           <View style={styles.intro}>
             <TextInput
-              placeholder="Height"
+              placeholder="Height in Cm"
               keyboardType="numeric"
               placeholderTextColor={'grey'}
               style={styles.input}
@@ -62,7 +62,7 @@ export default class BMI extends React.Component {
               }}
             />
             <TextInput
-              placeholder="Mass"
+              placeholder="Mass in Kg"
               keyboardType="numeric"
               placeholderTextColor={'grey'}
               style={styles.input}
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     height: 80,
     textAlign: "center",
     width: "50%",
-    fontSize: 50,
+    fontSize: 30,
     marginTop: 24,
     color: "#FFCB1F"
   },

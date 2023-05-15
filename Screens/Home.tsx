@@ -85,6 +85,9 @@ const Home = ({ navigation }) => {
         <TouchableOpacity onPress={() => utApps("PDF")}>
           <Image style={[Homestyle.icons,{}]} source={require('./Icons/pdf.png')} />
         </TouchableOpacity>
+        <TouchableOpacity onPress={() => utApps("WordPdf")}>
+          <Image style={[Homestyle.icons,{}]} source={require('./Icons/word.png')} />
+        </TouchableOpacity>
         <TouchableOpacity onPress={() => utApps("Weather")}>
           <Image style={[Homestyle.icons,{}]} source={require('./Icons/weather.png')} />
         </TouchableOpacity>
@@ -94,6 +97,9 @@ const Home = ({ navigation }) => {
         <TouchableOpacity onPress={() => utApps("BMI")}>
           <Image style={[Homestyle.icons,{}]} source={require('./Icons/bmi.png')} />
         </TouchableOpacity>
+        {/* <TouchableOpacity onPress={() => utApps("WordtPDF")}>
+          <Image style={[Homestyle.icons,{}]} source={require('./Icons/bmi.png')} />
+        </TouchableOpacity> */}
       </View>
       {/* <View style={{position:'absolute',bottom:20,
       right:20,borderRadius:50,elevation:20}}> */}
